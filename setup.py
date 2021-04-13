@@ -73,7 +73,7 @@ setup(
     long_description_content_type='text/markdown',
     author='Sven Kreiss',
     author_email='research@svenkreiss.com',
-    url='https://github.com/vita-epfl/openpifpaf',
+    url='https://github.com/openpifpaf/openpifpaf',
     ext_modules=EXTENSIONS,
     zip_safe=False,
 
