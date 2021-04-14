@@ -8,7 +8,6 @@ import openpifpaf
 
 @pytest.mark.xfail
 def test_torchscript_script():
-    openpifpaf.plugin.register()
     openpifpaf.network.heads.CompositeField3.inplace_ops = False
 
     datamodule = openpifpaf.datasets.factory('cocokp')
@@ -20,7 +19,6 @@ def test_torchscript_script():
 
 
 def test_torchscript_trace():
-    openpifpaf.plugin.register()
     openpifpaf.network.heads.CompositeField3.inplace_ops = False
 
     datamodule = openpifpaf.datasets.factory('cocokp')
@@ -33,8 +31,6 @@ def test_torchscript_trace():
 
 @pytest.mark.xfail
 def test_torchscript_decoder():
-    openpifpaf.plugin.register()
-
     datamodule = openpifpaf.datasets.factory('cocokp')
     decoder = openpifpaf.decoder.factory(datamodule.head_metas)
     with torch.no_grad():
