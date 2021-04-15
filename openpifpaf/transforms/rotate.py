@@ -4,11 +4,16 @@ import math
 
 import numpy as np
 import PIL
-import scipy
 import torch
 
+from .pad import CenterPad
 from .preprocess import Preprocess
 from .. import utils
+
+try:
+    import scipy
+except ImportError:
+    scipy = None
 
 LOG = logging.getLogger(__name__)
 
@@ -99,4 +104,17 @@ class RotateUniform(Preprocess):
     def __call__(self, image, anns, meta):
         sym_rnd = (float(torch.rand(1).item()) - 0.5) * 2.0
         angle = sym_rnd * self.max_angle
+
+        # pad first
+        if abs(angle) > 1.0:
+            w, h = image.size
+            cos_angle = math.cos(abs(angle) * math.pi / 180.0)
+            sin_angle = math.sin(abs(angle) * math.pi / 180.0)
+            padded_size = (
+                int(w * cos_angle + h * sin_angle) + 1,
+                int(h * cos_angle + w * sin_angle) + 1,
+            )
+            center_pad = CenterPad(padded_size)
+            image, anns, meta = center_pad(image, anns, meta)
+
         return rotate(image, anns, meta, angle)
